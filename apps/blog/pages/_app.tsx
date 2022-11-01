@@ -1,7 +1,7 @@
-import { Header } from '@page/blog/ui';
-import { AppProps } from 'next/app';
-import Head from 'next/head';
-import './styles.css';
+import { Header } from '@page/blog/ui'
+import { AppProps } from 'next/app'
+import Head from 'next/head'
+import './styles.css'
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
@@ -10,13 +10,13 @@ function CustomApp({ Component, pageProps }: AppProps) {
         <title>Front-End</title>
       </Head>
       <Header />
-      <div className="flex justify-start items-center flex-col p-4 pt-[0px] mt-4 overflow-auto">
-        <div className="flex justify-start items-center flex-col w-full md:w-4/5 lg:w-[65%] xl:w-1/2">
+      <div className="flex justify-start items-center flex-col p-4 pt-[0px] pb-6 mt-4 overflow-auto">
+        <div className="flex justify-start items-center flex-col w-full md:w-1/2 lg:w-[40%]">
           <Component {...pageProps} />
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default CustomApp;
+export default CustomApp

@@ -5,13 +5,16 @@
   ul,
   ol {
     list-style: revert;
-    list-style-position: inside;
+    padding-left: 20px;
   }
   ol ul,
   ol ol,
   ul ul,
   ul ol {
-    padding-left: 1rem;
+    padding-left: 25px;
+  }
+  li ~ li {
+    margin-top: 0.2rem;
   }
 }
 
@@ -20,6 +23,7 @@ html {
     Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   font-size: 62.5%;
+  -webkit-tap-highlight-color: transparent;
 }
 body {
   margin: 0;
@@ -30,20 +34,20 @@ body {
   color: #fff;
 }
 
-.prose code,
+.prose code span.constant {
+  color: #fff !important;
+}
+
+.prose p code,
+.prose li code {
+  display: inline-block;
+  background-color: #615af1;
+  padding: 0 0.4rem;
+  border-radius: 0.2rem;
+  font-size: 1.4rem;
+}
+
+.prose a,
 .prose li::marker {
   color: #615af1;
-}
-
-.prose pre code {
-  font-size: 1.4rem;
-  color: #fff;
-}
-
-.prose h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-bottom: 1rem;
 }

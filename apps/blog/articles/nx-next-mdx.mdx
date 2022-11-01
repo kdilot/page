@@ -1,0 +1,69 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="Nx에서 생성된 NextJS 프로젝트에서 mdx 사용" year={2022} />
+
+<Tags data={['Nx', 'NextJS', 'MDX']} />
+
+> NextJS에서 markdown 파일을 읽기 위한 방법을 찾던중 mdx 방식이 컴포넌트도 함께 활용 할 수 있어서 mdx를 사용 해보기로 결정
+>
+> 별도의 WYSIWYG 에디터를 사용하지 않고 간단한 게시물을 markdown 활용해서 사용할 수 있을까?
+
+## 패키지 설치
+
+> yarn add @mdx-js/loader @mdx-js/react @next/mdx
+
+## 코드설정
+
+### mdx.d.ts
+
+.mdx 파일을 읽기 위해서 type 파일 생성
+
+```
+declare module '*.mdx' {
+  let MDXComponent: (props) => JSX.Element;
+  export default MDXComponent;
+}
+```
+
+### next.config.js
+
+```
+const { withNx } = require('@nrwl/next/plugins/with-nx');
+
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+    providerImportSource: '@mdx-js/react',
+  },
+});
+
+/**
+ * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
+ **/
+const nextConfig = {
+  nx: {
+    // Set this to true if you would like to to use SVGR
+    // See: https://github.com/gregberge/svgr
+    svgr: false,
+  },
+};
+
+module.exports = withNx(withMDX(nextConfig));
+```
+
+### \_app.tsx (example)
+
+```
+import { MDXProvider } from '@mdx-js/react'
+import MdxFile from './file.mdx'
+
+...
+
+return (
+  <MDXProvider>
+    <MdxFile />
+  </MDXProvider>
+)
+```

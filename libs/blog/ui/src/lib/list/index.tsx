@@ -1,19 +1,19 @@
-import React from 'react';
+import React from 'react'
 
 interface IListProps {
-  children: React.ReactNode;
-  title: string;
+  children: React.ReactNode
+  title: string
 }
 
 const List: React.FC<IListProps> = ({ children, title }) => {
   return (
     <div className="group-only-of-type:mb-5 inline-block w-full pb-1">
-      <p className="text-[2rem] mb-2 font-bold text-center bg-primary p-1 px-2 rounded-lg">
+      <p className="text-[2.5rem] mb-2 font-bold py-1 pb-3 select-none">
         {title}
       </p>
-      <div className="pl-2 border-l-4 border-primary">{children}</div>
+      <div className="display justify-center">{children}</div>
     </div>
-  );
-};
+  )
+}
 
-export default List;
+export default List

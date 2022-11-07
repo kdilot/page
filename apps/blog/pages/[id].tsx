@@ -10,7 +10,7 @@ const comp = {
   p: (_props) => <p className="leading-9" {..._props} />,
   pre: (_props) => (
     <pre
-      className="bg-[#141d29] p-3 pb-[0] text-[1.4rem] overflow-x-auto"
+      className="bg-[#141d29] p-[21px] pb-[0] text-[1.4rem] overflow-x-auto"
       {..._props}
     />
   ),

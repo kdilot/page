@@ -34,7 +34,8 @@ body {
   color: #fff;
 }
 
-.prose code span.constant {
+.prose code span.constant,
+.prose code span.number {
   color: #fff !important;
 }
 

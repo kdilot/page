@@ -1,0 +1,67 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="IE11에서 React 프로젝트 실행 이슈" year={2020} />
+
+<Tags data={['React', 'CRA', 'IE11']} />
+
+> CRA로 구성된 프로젝트에 eject 없이 code-slpitting을 적용하기 위한 방법
+
+## 프로젝트 환경
+
+- React (16.x)
+- react-scripts (3.4.x)
+- immer (6.x)
+
+## 이슈내용
+
+- React 프로젝트를 IE까지 고려를 해야 할지
+- IE에 적용하기 위해 필요한 내용 확인
+- react-scripts 특정 버전 이후부터 IE 공식 제공하지 않음
+- API 호출 Access-Control-Allow-Headers 값 CORS 오류 발생
+
+## 패키지 설치
+
+> yarn add react-app-polyfill core-js regenerator-runtime
+
+## 설정 추가
+
+### index.ts
+
+```jsx
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
+import 'react-app-polyfill/ie11'
+import 'react-app-polyfill/stable'
+import { enableES5 } from 'immer'
+
+enableES5()
+```
+
+### package.json
+
+```jsx
+"browserslist": {
+  "production": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all",
+    "ie 11" // 추가
+  ],
+  "development": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version",
+    "ie 11" // 추가
+  ]
+},
+```
+
+## 코멘트
+
+> 2022년 기준 공식적으로 IE 지원 종료됨
+
+- `IE` 를 사용하기 위해선 개발에 제약 사양이 너무 많이 생김
+- `React` 이슈인지 코드 이슈인지 확인은 못했지만 스크롤 반응 속도가 너무 느림
+- `IE` 가 주력인 기존 프로젝트를 `React` 로 개발하는 것이 아니라면, `IE` 는 버리고 가는 것이 더 높은 완성도와 효율성을 가져다 줄 수 있다고 생각함
+- `IE` 에서 `Access-Control-Allow-Headers` `*` 설정이 무시돼서 `AWS` 설정을 변경해서 사용
+- 2020년 기준 `네이버페이 주문형` 심사를 받기 위해선 `IE` 필수

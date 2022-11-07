@@ -1,0 +1,27 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="React Loadable-Component 적용" year={2020} />
+
+<Tags data={['React', 'CRA']} />
+
+> CRA로 구성된 프로젝트에 eject 없이 code-slpitting을 적용하기 위한 방법
+
+## 패키지 설치
+
+> yarn add @loadable/component
+
+## 사용 예시
+
+```ts
+const SampleComponent = loadable(() => import('./SampleComponent'))
+
+<SampleComponent />
+```
+
+## 코멘트
+
+- 공식 문서에선 `SSR` 적용하기 위한 설정이 필요하고 그에 따른 `eject` 를 해야 함
+- `build` 시 `chunk` 분할과 `react-helmet` 을 활용해서 부분 `SEO` 적용 시도
+- `서버에` 코드 업데이트 이후에 `클라이언트에서` 이전 `chunk` 를 호출하는 현상 존재 (캐싱 이슈로 보임)
+- 이후 프로젝트에선 `SSR` 뿐만 아니라 `code-splitting` 를 활용하기 위해서 `Next` 도입을 고려 할 예정
+- `code-splitting` 만 설정이 가능하다면, `SEO` 가 필요 없는 프로젝트에서도 `Next` 가 필요한지 고민해볼 필요성은 있음

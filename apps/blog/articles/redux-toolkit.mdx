@@ -1,0 +1,148 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="Redux Toolkit with Persist 샘플 테스트" year={2021} />
+
+<Tags data={['React', 'Redux Toolkit', 'Persist']} />
+
+> 기존 redux 구조를 redux-toolkit으로 바꿀 가치가 있는지 알아보기 위한 샘플 테스트
+>
+> [샘플코드](https://github.com/kdilot/log/tree/main/cra-redux-toolkit)
+
+## 패키지 설치
+
+> yarn add react-redux redux-persist @reduxjs/toolkit
+
+## 테스트 체크리스트
+
+- persist 사용버전, 미사용버전 분리
+- 기존 redux와 사용성 비교
+
+## 디렉토리 구조
+
+```ts
+src
+ ├─ features
+ |   └─ counter
+ |        └─ counterSlice.ts
+ ├─ hooks
+ |   └─ state.ts  // dispatch, selector 공통사용
+ ├─ store
+ |   └─ index.ts
+ ├─ App.tsx
+ ├─ index.tsx
+```
+
+## 설정 (only redux-toolkit)
+
+### index.ts
+
+```ts
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import { store } from 'store'
+import { Provider } from 'react-redux'
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
+)
+```
+
+### store/index.ts
+
+```ts
+import {
+  Action,
+  combineReducers,
+  configureStore,
+} from '@reduxjs/toolkit'
+import counterReducer from 'features/counter/counterSlice'
+
+const reducers = combineReducers({
+  counter: counterReducer,
+})
+
+export const store = configureStore({
+  reducer: reducers,
+  }),
+})
+```
+
+## 설정 (redux-toolkit with redux-persist)
+
+### index.ts
+
+```ts
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import { store } from 'store'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react' // 추가
+import { persistStore } from 'redux-persist' // 추가
+
+const persistor = persistStore(store) // 추가
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        {' '}
+        // 추가
+        <App />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
+)
+```
+
+### store/index.ts
+
+```ts
+import { Action, combineReducers, configureStore } from '@reduxjs/toolkit'
+import counterReducer from 'features/counter/counterSlice'
+import storage from 'redux-persist/lib/storage' // 추가
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist' // 추가
+
+const reducers = combineReducers({
+  counter: counterReducer,
+})
+
+const persistConfig = {
+  // 추가
+  key: 'root',
+  storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, reducers) // 추가
+
+export const store = configureStore({
+  reducer: persistedReducer, // persist reducer로 설정변경
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }), // 추가
+})
+```
+
+## 코멘트
+
+- 기본 세팅이 보다 편리함 (`immer, thunk` 포함)
+- thunk가 포함되어 있어서 `redux-saga` 를 써야 할지는 고민이 필요
+- hooks 와 slice 를 조합해서 사용하면 좋아보임
+- 간단한 상태관리는 `recoil` 을 사용해보는 것을 고려할지도...

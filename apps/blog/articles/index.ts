@@ -4,8 +4,12 @@ import ReactImageIssue from './react-image-issue.mdx'
 import ReactLoadableComponent from './react-loadable-component.mdx'
 import ReactIE11Issue from './react-ie11-issue.mdx'
 import ReactWYSIWYG from './react-wysiwyg.mdx'
+import ReactQuery from './react-query.mdx'
+import ReduxToolkit from './redux-toolkit.mdx'
 
 export const agendas = {
+  'React Query 샘플 테스트': ReactQuery,
+  'Redux Toolkit 샘플 테스트': ReduxToolkit,
   'Nx에서 생성된 NextJS 프로젝트에서 mdx 사용': NxNextMdx,
   'NextJS svg 파일을 적용하기 위한 설정': NextSvg,
 }

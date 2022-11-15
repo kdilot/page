@@ -20,7 +20,7 @@ const comp = {
   h4: (_props) => <h4 className="font-bold text-[1.6rem]" {..._props} />,
   blockquote: (_props) => (
     <blockquote
-      className="flex flex-col p-3 border-l-[0.5rem] bg-[#141d29] border-primary gap-[0.4rem]"
+      className="flex flex-col p-3 border-l-[0.5rem] bg-[#141d29] border-primary gap-1"
       {..._props}
     />
   ),

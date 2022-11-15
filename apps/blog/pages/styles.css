@@ -35,6 +35,7 @@ body {
 }
 
 .prose code span.constant,
+.prose code span.comment,
 .prose code span.number {
   color: #fff !important;
 }

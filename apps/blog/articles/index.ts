@@ -9,6 +9,7 @@ import ReduxToolkit from './redux-toolkit.mdx'
 import ReactPortal from './react-portal.mdx'
 import ReactStorybookUpdateIssue from './react-storybook-update-issue.mdx'
 import RecoilDuplicateIssue from './recoil-duplicate-issue.mdx'
+import ReactComponentNPM from './react-component-npm.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -17,6 +18,7 @@ export const agendas = {
   'React CRA 프로젝트 storybook 버전 업데이트시 이슈':
     ReactStorybookUpdateIssue,
   'Recoil key duplicate 이슈': RecoilDuplicateIssue,
+  'NPM 배포용 React UI Component 만들기 (1)': ReactComponentNPM,
   'Nx에서 생성된 NextJS 프로젝트에서 mdx 사용': NxNextMdx,
   'NextJS svg 파일을 적용하기 위한 설정': NextSvg,
 }

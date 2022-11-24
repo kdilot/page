@@ -13,6 +13,7 @@ import ReactComponentNPM from './react-component-npm.mdx'
 import ReactComponentStorybookNPM from './react-component-npm-storybook.mdx'
 import ReactRouterV6 from './react-routerv6.mdx'
 import NextAuth from './next-auth.mdx'
+import NextApollo1 from './next-apollo1.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -26,6 +27,7 @@ export const agendas = {
     ReactComponentStorybookNPM,
   'React Router v6로 업그레이드': ReactRouterV6,
   'NextJS에 NextAuth 적용': NextAuth,
+  'NextJS with Apollo 설치 (1)': NextApollo1,
   'Nx에서 생성된 NextJS 프로젝트에서 mdx 사용': NxNextMdx,
   'NextJS svg 파일을 적용하기 위한 설정': NextSvg,
 }

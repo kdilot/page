@@ -1,0 +1,31 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="NextJS with Apollo 설치 (1)" year={2022} />
+
+<Tags data={['NEXT.JS', 'Apollo', 'GraphQL']} />
+
+> NextJS Apollo 기본 설치
+>
+> [샘플코드](https://github.com/kdilot/log/tree/main/next-with-apollo/next-with-apollo1)
+
+## 패키지 설치
+
+> create-next-app next-with-apollo --ts
+
+## 설정 추가
+
+### tsconfig.json
+
+```
+{
+  "compilerOptions": {
+    ...
+    "baseUrl": ".",
+    "paths": {
+      "@assets": ["src/assets"] // 사용할 디렉토리 정보
+    }
+    ...
+  },
+  ...
+}
+```

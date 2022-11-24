@@ -12,6 +12,7 @@ import RecoilDuplicateIssue from './recoil-duplicate-issue.mdx'
 import ReactComponentNPM from './react-component-npm.mdx'
 import ReactComponentStorybookNPM from './react-component-npm-storybook.mdx'
 import ReactRouterV6 from './react-routerv6.mdx'
+import NextAuth from './next-auth.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -24,6 +25,7 @@ export const agendas = {
   'NPM 배포용 React UI Component 만들기 (2) Storybook 사용':
     ReactComponentStorybookNPM,
   'React Router v6로 업그레이드': ReactRouterV6,
+  'NextJS에 NextAuth 적용': NextAuth,
   'Nx에서 생성된 NextJS 프로젝트에서 mdx 사용': NxNextMdx,
   'NextJS svg 파일을 적용하기 위한 설정': NextSvg,
 }

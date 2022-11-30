@@ -16,6 +16,7 @@ import NextAuth from './next-auth.mdx'
 import NextApollo1 from './next-apollo1.mdx'
 import NextApollo2 from './next-apollo2.mdx'
 import NextApollo3 from './next-apollo3.mdx'
+import NextApollo4 from './next-apollo4.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -32,6 +33,7 @@ export const agendas = {
   'NextJS with Apollo 설치 (1)': NextApollo1,
   'NextJS with Apollo Client and Server (2)': NextApollo2,
   'NextJS with Apollo Schema Modules (3)': NextApollo3,
+  'NextJS with Apollo GraphQL Code Generator (4)': NextApollo4,
   'Nx에서 생성된 NextJS 프로젝트에서 mdx 사용': NxNextMdx,
   'NextJS svg 파일을 적용하기 위한 설정': NextSvg,
 }

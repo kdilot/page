@@ -1,0 +1,40 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="NextJS with Apollo Emotion Style (5)" year={2022} />
+
+<Tags data={['NEXT.JS', 'Apollo', 'GraphQL', 'Emotion']} />
+
+> NextJS Apollo Emotion Style 설정
+>
+> [샘플코드](https://github.com/kdilot/log/edit/main/next-with-apollo/next-with-apollo5)
+
+## 패키지 설치
+
+depenencies
+
+> yarn add @emotion/react @emotion/styled
+
+devDependencies
+
+> yarn add --dev @emotion/babel-plugin
+
+## 설정 추가
+
+### .babelrc
+
+```ts
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-react": {
+          "runtime": "automatic",
+          "importSource": "@emotion/react"
+        }
+      }
+    ]
+  ],
+  "plugins": ["@emotion/babel-plugin"]
+}
+```

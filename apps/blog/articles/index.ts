@@ -18,6 +18,7 @@ import NextApollo2 from './next-apollo2.mdx'
 import NextApollo3 from './next-apollo3.mdx'
 import NextApollo4 from './next-apollo4.mdx'
 import NextApollo5 from './next-apollo5.mdx'
+import GoogleSheetV4 from './google-sheet-api.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -36,6 +37,7 @@ export const agendas = {
   'NextJS with Apollo Schema Modules (3)': NextApollo3,
   'NextJS with Apollo GraphQL Code Generator (4)': NextApollo4,
   'NextJS with Apollo Emotion Style (5)': NextApollo5,
+  'Google Sheet API v4 사용': GoogleSheetV4,
   'Nx에서 생성된 NextJS 프로젝트에서 mdx 사용': NxNextMdx,
   'NextJS svg 파일을 적용하기 위한 설정': NextSvg,
 }

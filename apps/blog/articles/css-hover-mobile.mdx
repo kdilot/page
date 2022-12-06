@@ -1,0 +1,31 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="CSS hover 모바일에선 적용 안되게 하기" year={2022} />
+
+<Tags data={['CSS']} />
+
+> hover 스타일을 작성 했을 때 모바일에선 hover 효과가 잔상으로 남게됨
+
+## 설정 추가
+
+### 기존에 사용하던 방식의 스타일
+
+```css
+div:hover {
+  background-color: #000;
+  border-radius: 4px;
+}
+```
+
+### media query를 적용한 스타일
+
+media query를 써서 hover가 가능한 영역에서만 동작하도록 스타일을 작성
+
+```css
+@media (hover: hover) {
+  div:hover {
+    background-color: #000;
+    border-radius: 4px;
+  }
+}
+```

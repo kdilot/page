@@ -22,6 +22,7 @@ import GoogleSheetV4 from './google-sheet-api.mdx'
 import ReactUiComponent from './react-ui-component.mdx'
 import ElectronVite from './electron-vite.mdx'
 import CSSHoverMobile from './css-hover-mobile.mdx'
+import JavascriptMatrix from './javascript-matrix.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -46,6 +47,7 @@ export const agendas = {
   'Nx에서 생성된 NextJS 프로젝트에서 mdx 사용': NxNextMdx,
   'NextJS svg 파일을 적용하기 위한 설정': NextSvg,
   'CSS hover 모바일에선 적용 안되게 하기': CSSHoverMobile,
+  'Javascript 2차월 배열 초기화 이슈': JavascriptMatrix,
 }
 
 export const legacies = {

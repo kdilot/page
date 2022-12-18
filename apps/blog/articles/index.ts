@@ -23,6 +23,7 @@ import ReactUiComponent from './react-ui-component.mdx'
 import ElectronVite from './electron-vite.mdx'
 import CSSHoverMobile from './css-hover-mobile.mdx'
 import JavascriptMatrix from './javascript-matrix.mdx'
+import NextSuspenseErrorBoundary from './next-with-boundary.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -48,6 +49,7 @@ export const agendas = {
   'NextJS svg 파일을 적용하기 위한 설정': NextSvg,
   'CSS hover 모바일에선 적용 안되게 하기': CSSHoverMobile,
   'Javascript 2차월 배열 초기화 이슈': JavascriptMatrix,
+  'NextJS에 React Suspense, Error Boundary 적용': NextSuspenseErrorBoundary,
 }
 
 export const legacies = {

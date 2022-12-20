@@ -25,6 +25,7 @@ import CSSHoverMobile from './css-hover-mobile.mdx'
 import JavascriptMatrix from './javascript-matrix.mdx'
 import NextSuspenseErrorBoundary from './next-with-boundary.mdx'
 import ApolloGraphqlWithSuspense from './apollo-graphql-suspense.mdx'
+import Webpack5ModuleFederation from './webpack5-module-federation.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -53,6 +54,7 @@ export const agendas = {
   'Apollo GraphQL Codegen과 React Suspense를 함께 활용하는 이슈':
     ApolloGraphqlWithSuspense,
   'NextJS에 React Suspense, Error Boundary 적용': NextSuspenseErrorBoundary,
+  'Webpack5 Module Federation 도입 검토': Webpack5ModuleFederation,
 }
 
 export const legacies = {

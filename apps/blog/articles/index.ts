@@ -27,6 +27,7 @@ import NextSuspenseErrorBoundary from './next-with-boundary.mdx'
 import ApolloGraphqlWithSuspense from './apollo-graphql-suspense.mdx'
 import Webpack5ModuleFederation from './webpack5-module-federation.mdx'
 import Next13NxBuild from './next13-nx-build.mdx'
+import NxBuildCache from './nx-build-cache.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -57,6 +58,7 @@ export const agendas = {
   'NextJS에 React Suspense, Error Boundary 적용': NextSuspenseErrorBoundary,
   'Webpack5 Module Federation 도입 검토': Webpack5ModuleFederation,
   'Next13 app 디렉토리 사용시 Nx build 이슈': Next13NxBuild,
+  'Nx build Cache 이슈': NxBuildCache,
 }
 
 export const legacies = {

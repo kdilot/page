@@ -10,7 +10,7 @@ export function Header(props: HeaderProps) {
   return (
     <div className="bg-slate-900 text-white flex w-full items-center justify-between p-3 shadow-lg shadow-slate-100/30">
       <h1 onClick={() => router.push('/')} className="cursor-pointer">
-        Front-End
+        Blog
       </h1>
       <div
         className="flex items-center justify-center w-[2.5rem] h-[2.5rem] cursor-pointer"

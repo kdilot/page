@@ -28,6 +28,7 @@ import ApolloGraphqlWithSuspense from './apollo-graphql-suspense.mdx'
 import Webpack5ModuleFederation from './webpack5-module-federation.mdx'
 import Next13NxBuild from './next13-nx-build.mdx'
 import NxBuildCache from './nx-build-cache.mdx'
+import ContentEditableInput from './contentEditable-input.mdx'
 
 export const agendas = {
   'React Query 샘플 테스트': ReactQuery,
@@ -59,6 +60,7 @@ export const agendas = {
   'Webpack5 Module Federation 도입 검토': Webpack5ModuleFederation,
   'Next13 app 디렉토리 사용시 Nx build 이슈': Next13NxBuild,
   'Nx build Cache 이슈': NxBuildCache,
+  'contentEditable를 활용한 input 사용하기': ContentEditableInput,
 }
 
 export const legacies = {

@@ -7,7 +7,7 @@ import files from '../articles'
 import { convertArticleName } from '../utils/article'
 
 const comp = {
-  p: (_props) => <div className="leading-9" {..._props} />,
+  p: (_props) => <div className="tracking-wide" {..._props} />,
   pre: (_props) => (
     <pre
       className="bg-[#141d29] p-[21px] pb-[0] text-[1.4rem] overflow-x-auto"

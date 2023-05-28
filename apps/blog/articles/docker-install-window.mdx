@@ -1,0 +1,40 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="Docker Desktop Window 설치" year={2023} />
+
+<Tags data={['Docker', 'Window11']} />
+
+> Window11 로컬에서 Docker 테스트를 하기 위한 설치과정
+
+## 설치
+
+### Docker Desktop 설치
+
+> [Docker Desktop for Window 설치경로](https://www.docker.com/products/docker-desktop/) 설치가 완료되면 실행시 오류가 발생함
+
+### WSL2 및 Ubuntu 설치
+
+Power Shell 관리자 권한으로 실행 후 아래 명령어 실행
+
+```ts
+// Windows SubSystem Linux 를 활성화
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+```
+
+```ts
+// VirtualMachinePlatform 기능을 활성화
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+```
+
+
+Microsoft Store Ubuntu Install
+> 작성 당시에 20.04.6 LTS 버전을 설치함
+
+WSL2 리눅스 커널 업데이트
+> [커널 업데이트 설치경로](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi) Ubuntu 실행하기 전에 업데이트 파일을 설치 해야 함
+
+설치된 Ubuntu 실행 후 user 계정 세팅
+> 순서대로 진행되지 않으면 `WslRegisterDistribution failed with error: 0x800701bc` 같은 오류가 발생될 수 있음
+
+### Docker Desktop 실행
+실행시에 정상적인 세팅 화면이 뜨면 성공

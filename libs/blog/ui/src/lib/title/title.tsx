@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import Avatar from './images/rk.png'
+import Arrow from './images/arrow-left.svg'
+import { useRouter } from 'next/router'
 
 export interface TitleProps {
   title: string
@@ -7,16 +7,15 @@ export interface TitleProps {
 }
 
 export function Title({ title, year }: TitleProps) {
+  const router = useRouter()
   return (
     <div className="select-none">
-      <div className="flex items-center">
-        <div className="w-5 h-5 rounded-full overflow-hidden mr-2">
-          <Image src={Avatar} width="100%" height="100%" />
-        </div>
-        <div className="flex opacity-80 gap-1 text-[1.5rem]">
-          <span>kdilot</span>
-          <span>·</span>
-          <span>{year}</span>
+      <div className="flex items-center justify-between">
+        <div
+          className="flex items-center justify-center w-[5rem] h-[5rem] cursor-pointer rounded-lg"
+          onClick={() => router.back()}
+        >
+          <Arrow />
         </div>
       </div>
       <h1 className="text-[3.5rem] font-bold">{title}</h1>

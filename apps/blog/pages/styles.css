@@ -54,3 +54,8 @@ body {
 .prose li::marker {
   color: #615af1;
 }
+
+[data-selected=true] {
+  border-bottom-color: #615af1;
+  color:#615af1
+}

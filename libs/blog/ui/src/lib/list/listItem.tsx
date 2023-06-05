@@ -8,11 +8,12 @@ interface IListItemProps {
 const ListItem: React.FC<IListItemProps> = ({ children, onClick }) => {
   return (
     <div
-      className="flex items-start break-all cursor-pointer hover:opacity-90 mb-[0.8rem]"
+      className="flex items-start break-all cursor-pointer hover:opacity-90 mb-[0.8rem] select-none"
       onClick={onClick}
     >
-      <div className="flex justify-center min-w-[8px] min-h-[8px] w-1 h-1 bg-primary rounded-full mr-2 mt-[6px]" />
-      <span className="leading-tight hover:text-primary">{children}</span>
+      <div className="leading-tight px-2 py-1 rounded-lg hover:bg-[rgba(97,90,241,0.4)] hover:font-bold text-[1.6rem] md:text-[1.8rem] lg:text-[1.8rem]">
+        {children}
+      </div>
     </div>
   )
 }

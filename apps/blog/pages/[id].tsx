@@ -35,7 +35,7 @@ const Detail: NextPage = () => {
   if (!File) return null
 
   return (
-    <article className="flex flex-col prose prose-2xl w-full gap-y-2 pt-4">
+    <article className="flex flex-col prose prose-2xl w-full gap-y-2">
       <MDXProvider components={comp}>
         <File />
       </MDXProvider>

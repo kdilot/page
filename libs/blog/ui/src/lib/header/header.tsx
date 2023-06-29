@@ -8,7 +8,7 @@ export function NextHeader(props: NextHeaderProps) {
   const router = useRouter()
   return (
     <div className="w-full flex items-center justify-center px-4 select-none">
-      <div className="flex w-full items-center justify-between py-3 md:w-1/2 lg:w-[40%]">
+      <div className="flex w-full items-center justify-between py-3 md:w-1/2 lg:w-[55%]">
         <h1
           onClick={() => router.push('/')}
           className="cursor-pointer font-bold text-[2.2rem] text-white"

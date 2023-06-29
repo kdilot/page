@@ -30,6 +30,7 @@ import Next13NxBuild from './next13-nx-build.mdx'
 import NxBuildCache from './nx-build-cache.mdx'
 import ContentEditableInput from './contentEditable-input.mdx'
 import DockerInstallWindow from './docker-install-window.mdx'
+import PdfDownloadPaginate from './pdf-download-paginate.mdx'
 import { IArticle, IArticleCode, TArticleCategory } from './article.type'
 
 const articleArray: [IArticleCode, TArticleCategory][] = [
@@ -102,6 +103,7 @@ const articleArray: [IArticleCode, TArticleCategory][] = [
     'withJS',
   ],
   [{ 'Docker Desktop Window 설치': DockerInstallWindow }, 'etc'],
+  [{ 'PDF 다운로드 페이지 분리 적용': PdfDownloadPaginate }, 'withJS'],
 ]
 
 export const articles: IArticle[] = articleArray.map(([code, category]) => {

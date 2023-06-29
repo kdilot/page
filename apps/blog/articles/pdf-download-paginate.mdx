@@ -1,0 +1,332 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="PDF 다운로드 페이지 분리 적용" year={2023} />
+
+<Tags data={['NEXT.JS', 'PDF']} />
+
+> 많은 데이터가 담긴 페이지를 pdf로 다운로드 할 때 다운되지 않고 화면이 깨지는 현상이 존재해서
+>
+> 전체 화면을 페이지 단위로 나눠서 다운로드를 하는 방식을 적용
+
+## 패키지 설치
+
+> yarn add -D jspdf html2canvas html-to-imag p-limit emotion
+
+## 요구사항
+
+> 많은 정보가 있어도 다운로드 되도록 paginate 되어야 함
+>
+> 어느정도 다운로드 속도가 빨라야 하고 용량도 적었으면 함
+>
+> 한글문자가 꺠지지 않아야 함
+>
+> 클라이언트에서 해당 기능이 동작해야 함
+
+## 작업방식
+
+> 화면에서 어느정도 영역까지 한 페이지에 담을 수 있는지를 체크해서 미리 page를 구분해 놓고 해당 page 데이터를 pdf에 저장시키는 방법을 고려
+
+### page 단위로 자르기
+
+출력하고자 하는 화면의 최상단 클래스를 지정해준다<br/>
+본 예제에서는 출력하려는 페이지 단위의 클래스를 page로 지정하고 각 페이지에는 총 30줄 정도의 테이블을 출력한다
+
+```ts
+<Wrapper className="page" key={index}>
+  <Content>
+    {[...new Array(30)].map((__, _index) => (
+      <Row key={_index}>
+        <Cell>샘플</Cell>
+        <Cell>데이터</Cell>
+        <Cell>테이블</Cell>
+        <Cell>{30 * index + _index + 1}</Cell>
+      </Row>
+    ))}
+  </Content>
+</Wrapper>
+```
+
+### 데이터 배열 만들기
+
+page들을 불러왔을 때 순차적으로 진행하면 그만큼 시간이 걸릴 것으로 생각해서 page 만큼의 배열을 생성하고 동시에 진행해서 완료되는 순서대로
+해당 배열에 이미지 데이터를 담아 놓고 모든 작업이 끝나면 그때 순차적으로 pdf에 저장하도록 처리한다
+
+```ts
+const pages: any = document.querySelectorAll('.page') // 다운로드 받을 페이지 단위 영역
+const packages = new Array(pages.length).fill(undefined) // 이미지를 저장할 배열
+```
+
+### pdf에 넣기 위한 이미지 파일 작업 및 그려낸 canvas를 이미지 데이터로 변환
+
+html 코드를 canvas로 변환하여 새로운 canvas 영역에 width, height 값을 정해 다시 그려준다<br/>
+기본 pixelRatio 정보는 2로 잡히는데 용량이 어느정도 되는 편이라 용량을 줄이기 위해서는 scale을 1로 낮춰서 진행
+
+```ts
+const PADDING = 60
+const paddingTop = PADDING
+const paddingRight = PADDING
+const paddingBottom = PADDING
+const paddingLeft = PADDING
+
+let canvasWidth = 0
+let canvasHeight = 0
+...
+
+const renderPage = async (dom: any, index: number) => {
+  const canvas = await html2canvas(dom, { scale: 1 })
+  const canvas = await htmlToImage.toCanvas(dom, { pixelRatio: 1 })
+
+  if (canvasWidth === 0 || canvasHeight === 0) {
+    canvasWidth = canvas.width + paddingLeft + paddingRight
+    canvasHeight = canvas.height + paddingTop + paddingBottom
+  }
+
+  const newCanvas = document.createElement('canvas')
+  newCanvas.width = canvasWidth
+  newCanvas.height = canvasHeight
+  const ctx = newCanvas.getContext('2d')
+
+  if (ctx) {
+    ctx.fillStyle = '#ffffff' // Background color
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+    ctx.drawImage(canvas, paddingLeft, paddingTop)
+  }
+
+  const imgData = newCanvas.toDataURL('image/jpeg', 1.0)
+
+  packages[index] = imgData
+}
+
+await Promise.all(
+  [...pages].map(async (dom, index) => {
+    await renderPage(dom, index)
+  }),
+)
+
+```
+
+> [이슈]
+>
+> page 단위로 쪼갠 데이터여도 동시에 너무 많은 양을 처리하려고 하면 오류가 발생하여 적은 수 단위로 쪼개기 위해서 p-limit을 활용
+
+```ts
+// [AS-IS] 전체 배열을 돌릴 때
+// await Promise.all(
+//   [...pages].map(async (dom, index) => {
+//     await renderPage(dom, index);
+//   })
+// );
+
+// [TO-BE] limit 단위로 나눠서 진행
+const limit = pLimit(5)
+const promises = [...pages].map((dom, index) =>
+  limit(() => renderPage(dom, index))
+)
+await Promise.all(promises)
+```
+
+canvas로 변환해주는 것을 html2canvas를 활용 했는데 적은 양의 데이터를 처리할 땐 크게 문제되지 않았으나 page가 많아질수록 호출하는데 부하가 발생돼서 처리하는 시간이 오래걸림<br/>
+(대체 방안으로 html-to-image의 toCanvas를 사용 해봤는데 확실히 속도가 더 빠르고 위 문제를 어느정도 해소할 수 있었음)
+
+```ts
+// [AS-IS]
+// const canvas = await html2canvas(dom, { scale: 1 })
+
+// [TO-BE]
+const canvas = await htmlToImage.toCanvas(dom, { pixelRatio: 1 }) // html-to-image로 교체
+```
+
+### 만들어진 이미지 데이터들을 pdf에 page 단위로 추가
+
+배열을 이용해 순차적으로 pdf에 이미지를 저장한다<br/>
+저장한 이미지가 마지막이 아니면 pdf에 새로운 page를 추가 해준다
+
+```ts
+for (let i = 0; i < packages.length; i++) {
+  if (packages[i]) {
+    pdf.addImage(packages[i], 'PNG', 0, 0, pdfWidth, pdfHeight)
+
+    if (i < packages.length - 1) {
+      pdf.addPage()
+    }
+  }
+}
+```
+
+> [이슈]
+>
+> 기본적으로는 png로 사용하는데 속도도 느리지만 용량에서 차이가 많이 발생함
+>
+> jpeg로 진행했을 때 속도나 용량의 측면에서 이점이 많고 일반적인 텍스트 데이터를 보기 위함이므로 변경해도 크게 지장 없다고 판단
+
+```ts
+// [AS-IS]
+// pdf.addImage(packages[i], 'PNG', 0, 0, pdfWidth, pdfHeight)
+
+// [TO-BE]
+pdf.addImage(packages[i], 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST') // JPEG로 포멧을 변경
+```
+
+### 작업이 끝나면 pdf를 다운로드
+
+```ts
+pdf
+  .save('content.pdf', { returnPromise: true })
+  .then(() => alert('PDF render all done!'))
+  .catch(() => alert('PDF render failed'))
+```
+
+## 샘플 전체코드
+
+```ts
+import React, { useState } from 'react'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
+import styled from '@emotion/styled'
+import pLimit from 'p-limit'
+import * as htmlToImage from 'html-to-image'
+
+const PdfDownloadExample: React.FC = () => {
+  const [progress, setProgress] = useState<any>(0)
+
+  const PADDING = 60
+  const paddingTop = PADDING
+  const paddingRight = PADDING
+  const paddingBottom = PADDING
+  const paddingLeft = PADDING
+  let currentPage = 0
+
+  let canvasWidth = 0
+  let canvasHeight = 0
+
+  let pdfWidth = 0
+  let pdfHeight = 0
+
+  const limit = pLimit(5)
+
+  const handleDownload = async () => {
+    const pdf = new jsPDF('p', 'pt', 'a4')
+    const pages: any = document.querySelectorAll('.page')
+    const packages = new Array(pages.length).fill(undefined)
+
+    pdfWidth = pdf.internal.pageSize.getWidth()
+    pdfHeight = pdf.internal.pageSize.getHeight()
+
+    const renderPage = async (dom: any, index: number) => {
+      //   const canvas = await html2canvas(dom, { scale: 1 })
+      const canvas = await htmlToImage.toCanvas(dom, { pixelRatio: 1 })
+
+      if (canvasWidth === 0 || canvasHeight === 0) {
+        canvasWidth = canvas.width + paddingLeft + paddingRight
+        canvasHeight = canvas.height + paddingTop + paddingBottom
+      }
+
+      const newCanvas = document.createElement('canvas')
+      newCanvas.width = canvasWidth
+      newCanvas.height = canvasHeight
+      const ctx = newCanvas.getContext('2d')
+
+      if (ctx) {
+        ctx.fillStyle = '#ffffff' // Background color
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+        ctx.drawImage(canvas, paddingLeft, paddingTop)
+      }
+
+      const imgData = newCanvas.toDataURL('image/jpeg', 1.0)
+
+      packages[index] = imgData
+      currentPage++
+      setProgress(((currentPage / pages.length) * 100).toFixed(2))
+    }
+
+    // limit 단위로 나눠서 진행
+    const promises = [...pages].map((dom, index) =>
+      limit(() => renderPage(dom, index))
+    )
+    await Promise.all(promises)
+
+    // 전체 수행
+    // await Promise.all(
+    //   [...pages].map(async (dom, index) => {
+    //     await renderPage(dom, index)
+    //   }),
+    // )
+
+    for (let i = 0; i < packages.length; i++) {
+      if (packages[i]) {
+        pdf.addImage(packages[i], 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST')
+
+        if (i < packages.length - 1) {
+          pdf.addPage()
+        }
+      }
+    }
+
+    pdf
+      .save('content.pdf', { returnPromise: true })
+      .then(() => alert('PDF render all done!'))
+      .catch(() => alert('PDF render failed'))
+  }
+
+  return (
+    <div style={{ width: '100%' }}>
+      <button onClick={handleDownload}>Download as PDF ({progress}%)</button>
+      {[...new Array(100)].map((_, index) => {
+        return (
+          <Wrapper className="page" key={index}>
+            <Content>
+              {[...new Array(30)].map((__, _index) => (
+                <Row key={_index}>
+                  <Cell>샘플</Cell>
+                  <Cell>데이터</Cell>
+                  <Cell>테이블</Cell>
+                  <Cell>{30 * index + _index + 1}</Cell>
+                </Row>
+              ))}
+            </Content>
+          </Wrapper>
+        )
+      })}
+    </div>
+  )
+}
+
+const Wrapper = styled.div`
+  padding: 5px;
+`
+
+const Content = styled.div`
+  width: 100%;
+  border: 1px solid #000;
+  border-collapse: collapse;
+`
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  & ~ & {
+    border-top: 1px solid #000;
+  }
+`
+
+const Cell = styled.div`
+  flex: 1;
+  padding: 10px;
+
+  & ~ & {
+    border-left: 1px solid #000;
+  }
+`
+
+export default PdfDownloadExample
+```
+
+## 코멘트
+
+- 테스트로 사용했던 데이터를 기준으로 몇 가지 조건으로 다운로드 속도를 측정
+  - `5` 페이지 분량의 데이터를 pdf로 다운로드 했을 때 html-to-image를 사용하면 `약 0.8초`, html2canvas를 사용하면 `약 0.5초` 소요
+  - `50` 페이지 분량의 데이터를 pdf로 다운로드 했을 때 html-to-image를 사용하면 `약 9초`, html2canvas를 사용하면 `약 29초` 소요
+  - `100` 페이지 분량의 데이터를 pdf로 다운로드 했을 때 html-to-image를 사용하면 `약 20초`, html2canvas를 사용하면 `약 154초` 소요
+- 적은 데이터를 출력했을 땐 html2canvas를 이용하는게 조금 더 빨랐지만 데이터가 많아질수록 html-to-image가 더 나은 속도를 보여줌

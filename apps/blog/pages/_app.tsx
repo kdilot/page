@@ -11,7 +11,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
       </Head>
       <Header />
       <div className="flex justify-start items-center flex-col p-4 pt-[0px] pb-6 overflow-auto">
-        <div className="flex justify-start items-center flex-col w-full md:w-1/2 lg:w-[40%]">
+        <div className="flex justify-start items-center flex-col w-full md:w-1/2 lg:w-[55%]">
           <Component {...pageProps} />
         </div>
       </div>

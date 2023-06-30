@@ -1,0 +1,144 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="공통 SVG 관리를 위한 컴포넌트" year={2023} />
+
+<Tags data={['NEXT.JS', 'SVG', 'Emotion']} />
+
+> 여러 종류의 SVG를 컴포넌트를 통해 관리해서 활용
+
+## 요구사항
+
+> 색상 변경 및 사이즈 조절
+>
+> 아이콘을 쉽게 불러올 수 있는 구조
+
+## 작업방식
+
+> SVG를 관리하는 부분과 아이콘 컴포넌트를 관리하는 부분으로 나눠서 진행
+
+## 설정
+
+### SvgGroup.tsx
+
+이미지는 규격이 여러 종류를 사용할 수 있기에 구분을 하여 사용한다 (예시로 16x16, 20x20 사용을 가정)<br/>
+SVG 파일에서 기본 fill 및 width, height 정보는 변경해야 공통으로 사용이 가능함
+
+```ts
+import { Home, Setting, ArrowUp, ArrowDown } from './images'
+
+interface SvgProps {
+  fill?: string
+}
+
+const DEFAULT_FILL = '#000'
+
+/**
+ *
+ * @param Component SVG File
+ * @param defaultFill If you want to set a default icon color
+ * @returns
+ */
+const createArrowComponent = (
+  Component: React.ComponentType<SvgProps>,
+  defaultFill: string = DEFAULT_FILL
+) => {
+  const WrappedComponent: React.FC<SvgProps> = ({ fill }) => (
+    <Component fill={fill ?? defaultFill} />
+  )
+
+  WrappedComponent.displayName = `Wrapped(${
+    Component.displayName || Component.name || 'Component'
+  })`
+  // eslint react/display-name error로 인한 displayName 추가
+
+  return WrappedComponent
+}
+
+/**
+ * images에 svg 파일을 추가하고 기본 옵션을 변경해서 사용한다
+ * svg내 width, height 영역 삭제
+ * 메인 색상 영역을 inherit으로 변경
+ */
+const SvgSize16 = {
+  arrowDown: createArrowComponent(ArrowDown),
+  arrowUp: createArrowComponent(ArrowUp),
+}
+const SvgSize20 = {
+  home: createArrowComponent(Home),
+  setting: createArrowComponent(Setting, '#ff0000'), // 기본 색상을 red로 지정
+}
+
+export type Svg16Type = keyof typeof SvgSize16
+export type Svg20Type = keyof typeof SvgSize20
+export type SvgType = Svg16Type | Svg20Type
+
+export const isSvgSize16 = (name: SvgType) => {
+  return Object.keys(SvgSize16).includes(name as string)
+}
+
+const SvgGroup = { ...SvgSize16, ...SvgSize20 }
+
+export default SvgGroup
+```
+
+### index.tsx(Icons)
+
+SVG 유형에 따라 기본 사이즈를 설정 해주고<br/>
+SvgType을 통해 공통 컴포넌트에서 아이콘 종류를 쉽게 불러올 수 있도록 활용
+
+```ts
+import SvgGroup, { SvgType, isSvgSize16 } from './SvgGroup'
+import styled from '@emotion/styled'
+
+interface IconsProps {
+  name: SvgType
+  size?: number
+  full?: boolean
+  fill?: string
+}
+
+const Icons: React.FC<IconsProps> = ({ name, size, full, fill }) => {
+  const sizeStyle = `${
+    full ? '100%' : `${size ?? (isSvgSize16(name) ? 16 : 20)}px`
+  }`
+
+  return (
+    <Wrapper
+      style={{
+        width: sizeStyle,
+        height: sizeStyle,
+      }}
+    >
+      {SvgGroup[name]({ fill })}
+    </Wrapper>
+  )
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export { Icons }
+```
+
+### 사용방법
+
+```ts
+// 기본 (name은 지정된 아이콘 명칭만 사용할 수 있음)
+<Icons name="home" /> // 사이즈 20x20
+<Icons name="arrowUp" /> // 사이즈 16x16
+
+// 사이즈
+<Icons name="home" size={50} /> // 사이즈 50x50
+<Icons name="home" full /> // 최대 영역으로 지정 100% (full로 지정하면 size는 무시됨)
+
+// 색상
+<Icons name="home" fill="#fff" />
+```
+
+## 코멘트
+
+- 단일 색상의 SVG를 활용하는데 있어서는 공통 컴포넌트가 의미 있지만 다양한 색상이 조합된 SVG의 경우에는 어떻게 활용 해야할지 고민이 필요(일반적으로 다양한 색상을 사용할 일은 없음)
+- `SvgGroup.tsx`에 `createArrowComponent` 함수를 활용해 가급적 중복된 코드를 줄였지만 아이콘 네이밍까지 묶어서 활용 할 수 있도록 개선이 필요할지 고민이 필요함

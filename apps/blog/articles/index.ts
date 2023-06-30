@@ -31,6 +31,7 @@ import NxBuildCache from './nx-build-cache.mdx'
 import ContentEditableInput from './contentEditable-input.mdx'
 import DockerInstallWindow from './docker-install-window.mdx'
 import PdfDownloadPaginate from './pdf-download-paginate.mdx'
+import SvgSharingComponent from './svg-sharing-component.mdx'
 import { IArticle, IArticleCode, TArticleCategory } from './article.type'
 
 const articleArray: [IArticleCode, TArticleCategory][] = [
@@ -103,6 +104,7 @@ const articleArray: [IArticleCode, TArticleCategory][] = [
     'withJS',
   ],
   [{ 'Docker Desktop Window 설치': DockerInstallWindow }, 'etc'],
+  [{ '공통 SVG 관리를 위한 컴포넌트': SvgSharingComponent }, 'withJS'],
   [{ 'PDF 다운로드 페이지 분리 적용': PdfDownloadPaginate }, 'withJS'],
 ]
 

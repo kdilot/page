@@ -1,4 +1,4 @@
-export type TArticleCategory = 'withJS' | 'issue' | 'etc'
+export type TArticleCategory = 'all' | 'withJS' | 'issue' | 'etc'
 export interface IArticleCode {
   [key: string]: React.ElementType
 }

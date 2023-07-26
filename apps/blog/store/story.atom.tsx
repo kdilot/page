@@ -4,14 +4,16 @@ import { TArticleCategory } from '../articles/article.type'
 
 export const articleAtom = atom(articles)
 
-export const articleCategoryAtom = atom<TArticleCategory | ''>('')
+export const articleTypeAtom = atom<TArticleCategory>('all')
 
-export const selectedCategoryArticleAtom = atom((get) => {
+export const filteredArticleAtom = atom((get) => {
   const articles = get(articleAtom)
-  const selectedCategory = get(articleCategoryAtom)
-  if (!selectedCategory)
+  const type = get(articleTypeAtom)
+
+  if (type === 'all')
     return articles.map((article) => Object.keys(article.code)[0])
+
   return articles
-    .filter((article) => article.category === selectedCategory)
+    .filter((article) => article.category === type)
     .map((article) => Object.keys(article.code)[0])
 })

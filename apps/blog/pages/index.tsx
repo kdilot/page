@@ -2,52 +2,55 @@ import { ListItem } from '@page/blog/ui'
 import { useRouter } from 'next/router'
 import { convertArticleName } from '../utils/article'
 import { useAtom, useAtomValue } from 'jotai'
-import {
-  articleCategoryAtom,
-  selectedCategoryArticleAtom,
-} from '../store/story.atom'
+import { articleTypeAtom, filteredArticleAtom } from '../store/story.atom'
+import { TArticleCategory } from '../articles/article.type'
 
 export function Index() {
-  const [category, setCategory] = useAtom(articleCategoryAtom)
-  const selected = useAtomValue(selectedCategoryArticleAtom)
   const router = useRouter()
+
+  const [type, setType] = useAtom(articleTypeAtom)
+  const filteredArticle = useAtomValue(filteredArticleAtom)
+
+  const handleType = (key: TArticleCategory) => {
+    setType(key)
+  }
 
   const onMove = (target: string) => {
     router.push(`/${convertArticleName(target)}`)
   }
   return (
-    <div className="gap-6 w-full text-white mt-6">
-      <div className="block whitespace-pre overflow-auto min-h-[5rem] select-none mb-2 font-bold text-[1.8rem] md:text-[2rem] lg:text-[2rem]">
-        <span
-          data-selected={category === ''}
-          className="px-2 pb-2 mb-1 border-b-4 border-white cursor-pointer hover:border-primary hover:text-primary"
-          onClick={() => setCategory('')}
+    <div className="gap-6 w-full mt-6">
+      <div className="flex gap-1 mb-2 text-[1.8rem] lg:text[2.2rem]">
+        <div
+          className="p-1 rounded-[0.5rem] cursor-pointer select-none font-bold"
+          data-selected={type === 'all' ? true : false}
+          onClick={() => handleType('all')}
         >
-          전체
-        </span>
-        <span
-          data-selected={category === 'withJS'}
-          className="px-2 pb-2 mb-1 border-b-4 border-white cursor-pointer hover:border-primary hover:text-primary"
-          onClick={() => setCategory('withJS')}
+          ALL
+        </div>
+        <div
+          className="p-1 rounded-[0.5rem] cursor-pointer select-none font-bold"
+          data-selected={type === 'withJS' ? true : false}
+          onClick={() => handleType('withJS')}
         >
-          JS / TS 활용 및 테스트
-        </span>
-        <span
-          data-selected={category === 'etc'}
-          className="px-2 pb-2 mb-1 border-b-4 border-white cursor-pointer hover:border-primary hover:text-primary"
-          onClick={() => setCategory('etc')}
+          JS/TS
+        </div>
+        <div
+          className="p-1 rounded-[0.5rem] cursor-pointer select-none font-bold"
+          data-selected={type === 'issue' ? true : false}
+          onClick={() => handleType('issue')}
         >
-          기타
-        </span>
-        <span
-          data-selected={category === 'issue'}
-          className="px-2 pb-2 mb-1 border-b-4 border-white cursor-pointer hover:border-primary hover:text-primary"
-          onClick={() => setCategory('issue')}
+          ISSUE
+        </div>
+        <div
+          className="p-1 rounded-[0.5rem] cursor-pointer select-none font-bold"
+          data-selected={type === 'etc' ? true : false}
+          onClick={() => handleType('etc')}
         >
-          이슈 정리
-        </span>
+          ETC
+        </div>
       </div>
-      {[...selected].reverse().map((file, index) => (
+      {[...filteredArticle].reverse().map((file, index) => (
         <ListItem key={`${file}${index}`} onClick={() => onMove(file)}>
           {file}
         </ListItem>

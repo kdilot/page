@@ -1,11 +1,11 @@
-const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
-const { join } = require('path');
-const colors = require('tailwindcss/colors');
-delete colors['lightBlue'];
-delete colors['warmGray'];
-delete colors['trueGray'];
-delete colors['coolGray'];
-delete colors['blueGray'];
+const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind')
+const { join } = require('path')
+const colors = require('tailwindcss/colors')
+delete colors['lightBlue']
+delete colors['warmGray']
+delete colors['trueGray']
+delete colors['coolGray']
+delete colors['blueGray']
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
       5: '32px',
       6: '48px',
     },
-    colors: { ...colors, primary: '#615af1' },
+    colors: { ...colors, primary: '#dee2e6' },
   },
   plugins: [],
-};
+}

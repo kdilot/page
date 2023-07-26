@@ -5,12 +5,12 @@ import './styles.css'
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
-    <div className="flex flex-col w-screen h-screen bg-slate-800">
+    <div className="flex flex-col w-screen h-screen">
       <Head>
         <title>Blog</title>
       </Head>
       <Header />
-      <div className="flex justify-start items-center flex-col p-4 pt-[0px] pb-6 overflow-auto">
+      <div className="flex justify-start items-center flex-col p-3 pt-[0px] pb-6">
         <div className="flex justify-start items-center flex-col w-full md:w-1/2 lg:w-[55%]">
           <Component {...pageProps} />
         </div>

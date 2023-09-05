@@ -32,6 +32,7 @@ import ContentEditableInput from './contentEditable-input.mdx'
 import DockerInstallWindow from './docker-install-window.mdx'
 import PdfDownloadPaginate from './pdf-download-paginate.mdx'
 import SvgSharingComponent from './svg-sharing-component.mdx'
+import ReactUseTransition from './react-use-transition.mdx'
 import { IArticle, IArticleCode, TArticleCategory } from './article.type'
 
 const articleArray: [IArticleCode, TArticleCategory][] = [
@@ -106,6 +107,7 @@ const articleArray: [IArticleCode, TArticleCategory][] = [
   [{ 'Docker Desktop Window 설치': DockerInstallWindow }, 'etc'],
   [{ '공통 SVG 관리를 위한 컴포넌트': SvgSharingComponent }, 'withJS'],
   [{ 'PDF 다운로드 페이지 분리 적용': PdfDownloadPaginate }, 'withJS'],
+  [{ 'useTransition의 잘못된 사용': ReactUseTransition }, 'issue'],
 ]
 
 export const articles: IArticle[] = articleArray.map(([code, category]) => {

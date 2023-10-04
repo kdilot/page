@@ -1,0 +1,103 @@
+import { Tags, Title } from '@page/blog/ui'
+
+<Title title="Vite에서 pages routing 사용하기" year={2023} />
+
+<Tags data={['React', 'Vite', 'React Router v6']} />
+
+> nextjs 처럼 vite에서도 pages routing을 사용하기 위한 세팅
+
+## 설치
+
+pnpm을 사용해서 진행
+
+> pnpm create vite project --template react
+>
+> pnpm install react-router react-router-dom
+>
+> pnpm install -D vite-plugin-pages
+
+## 설정 추가
+
+### src/vite-env.d.ts
+
+```ts
+/// <reference types="vite/client" />
+/// <reference types="vite-plugin-pages/client-react" />
+```
+
+### vite.config.ts
+
+```ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import Pages from 'vite-plugin-pages'
+
+export default defineConfig({
+  plugins: [react(), Pages()],
+})
+```
+
+### main.tsx
+
+```ts
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+import { BrowserRouter as Router } from 'react-router-dom'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <Router>
+      <App />
+    </Router>
+  </React.StrictMode>
+)
+```
+
+### app.tsx
+
+```ts
+import { Suspense } from 'react'
+import './App.css'
+import { useRoutes } from 'react-router'
+import routes from '~react-pages'
+
+function App() {
+  return <Suspense fallback={<p>Loading...</p>}>{useRoutes(routes)}</Suspense>
+}
+
+export default App
+```
+
+## Page 생성
+
+### pages/product
+
+index.tsx
+
+```ts
+const Product = () => {
+  return <div>Product Page</div>
+}
+
+export default Product
+```
+
+[id].tsx
+
+```ts
+import { useNavigate, useParams } from 'react-router'
+
+const ProductId = () => {
+  const { id } = useParams<{ id: string }>()
+
+  return (
+    <div>
+      <p>Page {id}</p>
+      <p onClick={() => navigate('/')}>go home</p>
+    </div>
+  )
+}
+export default ProductId
+```
